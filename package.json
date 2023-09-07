@@ -1,6 +1,7 @@
 {
   "name": "to-do-list",
   "version": "1.0.0",
+  "author": "Nathan Jones njonessurvey@gmail.com",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,12 +11,17 @@
     "start": "webpack serve --open",
     "build": "webpack"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Glitch-v0/ToDoList"
+  },
   "license": "ISC",
-  "devDependencies": {
-    "css-loader": "^6.8.1",
-    "html-webpack-plugin": "^5.5.3",
+  "dependencies": {
     "style-loader": "^3.3.3",
+    "css-loader": "^6.8.1"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^5.5.3",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
