@@ -45,6 +45,19 @@ export function createProjectsAndItems (){
 }
 
 export function deleteElements (){
-   var parent = document.querySelector(".body-container")
+   var parent = document.querySelector(".body-container");
    parent.replaceChildren([]);
+}
+
+export function projectSelection (project){
+    project.classList.add("selected-project");
+    console.log(`Clicked ${project}`);
+}
+
+export function projectRemoveSelection (projects){
+    [...projects].forEach(button => {
+        button.classList.remove("selected-project");
+        console.log("Removed project selection")
+    });
+    
 }

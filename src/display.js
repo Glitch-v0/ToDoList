@@ -8,5 +8,10 @@ export function initDisplay(){
         ec.makeElement("button", document.getElementById("project-container-outer"), "project-name", project.title);
         ec.styleElementID(project.title, "innerHTML", project.title)
     });
-    projects_buttons = document.getElementsByClassName("project-name");
-    }
+    let projects_buttons = document.getElementsByClassName("project-name");
+    [...projects_buttons].forEach(button => {
+        button.addEventListener("click", () => {
+        ec.projectRemoveSelection(projects_buttons)
+        ec.projectSelection(button)})
+    });
+}
