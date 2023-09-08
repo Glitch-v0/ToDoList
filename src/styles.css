@@ -1,0 +1,21 @@
+body {
+    display: flex;
+}
+.project-container-outer {
+    height: 100vh;
+    background-color: rgb(255, 127, 127);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.item-container-outer {
+    height: 100vh;
+    flex-grow: 5;
+    background-color: rgb(128, 255, 128);
+}
+
+.project-name {
+    height: 50px;
+}
