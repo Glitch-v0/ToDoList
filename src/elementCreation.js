@@ -66,11 +66,21 @@ export function showItemsOfProject (project){
     [...project.items].forEach(item => {
         let itemContainerID = `item-container:${item.title}`;
         let checkboxID = `checkbox:${item.title}`;
-        let labelID = `label:${item.title}`;
+        let labelTitleID = `label:${item.title}`;
+        let labelPriorityID = `label:${item.title}-priority:${item.priority}`;
+        let labelPriorityClass = `priority-${item.priority}`;
+        let labeldueDateID = `label:${item.title}-dueDate:${item.dueDate}`;
         makeElement("div", document.querySelector('.item-container-outer'), 'item', itemContainerID);
         makeElement("input", document.getElementById(itemContainerID), 'checkbox', checkboxID, { type: "checkbox" });
-        makeElement("label", document.getElementById(itemContainerID), 'label', labelID, { type: "label" });
-        styleElementID(labelID, "innerHTML", `${item.title}`)
+        // Item Title
+        makeElement("label", document.getElementById(itemContainerID), 'label-title', labelTitleID, { type: "label" });
+        styleElementID(labelTitleID, "innerHTML", `${item.title}`)
+        // Item Priority
+        makeElement("label", document.getElementById(itemContainerID), labelPriorityClass, labelPriorityID, { type: "label" });
+        styleElementID(labelPriorityID, "innerHTML", `${item.priority}`);
+        // Due Date
+        makeElement("label", document.getElementById(itemContainerID), 'label-dueDate', labeldueDateID, { type: "label" });
+        styleElementID(labeldueDateID, "innerHTML", `${item.dueDate}`);
     });
 }
 

@@ -18,9 +18,31 @@ body {
 .item-container-outer {
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
     height: 100vh;
     flex-grow: 5;
     background-color: rgb(128, 255, 128);
+}
+
+.item {
+    display: flex;
+    place-items: center;
+    gap: 10px;
+}
+
+.priority-Low {
+    color: green;
+}
+.priority-Medium {
+    color: yellow;
+}
+.priority-High {
+    color: red;
+}
+
+
+.checkbox {
+    border-radius: 50%;
 }
 
 .project-name {
