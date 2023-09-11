@@ -38,20 +38,27 @@ export function styleElementClass (elementClass, styleAttribute, styleValue){
     //console.log(`Styling ${elementToStyle} with ${styleAttribute} set to ${elementToStyle.style[styleAttribute]}`)
 }
 
-export function createProjectsAndItems (){
+export function createProjectsAndItemContainers (){
     // Grid Container to host nav bar and body
     makeElement("div", document.body, "project-container-outer", "project-container-outer");
     makeElement("div", document.body, "item-container-outer", "item-container-outer");
 }
 
-export function deleteElements (){
-   var parent = document.querySelector(".body-container");
-   parent.replaceChildren([]);
+export function deleteChildElements (parentClassOrID){
+    //var parent = document.querySelector(".body-container");
+    var parent = document.querySelector(parentClassOrID);
+    parent.replaceChildren([]);
 }
 
 export function projectSelection (project){
     project.classList.add("selected-project");
     console.log(`Clicked ${project}`);
+}
+
+export function showItemsOfProject (project){
+    [...project.items].forEach(item => {
+        makeElement("div", document.querySelector('.item-container-outer'), 'item', `item-container:${item.title}`)
+    });
 }
 
 export function projectRemoveSelection (projects){

@@ -1,14 +1,13 @@
 import { projectFactory, itemFactory } from "./addItems";
 
 export default function addDemoProjects(){
+    /* Example Projects */
     const homeCleanup = projectFactory("Home Cleanup", "A project to clean up the house", "High", "2023-10-31", "Remember to buy cleaning supplies");
-    // A project to learn a new language
     const languageLearning = projectFactory("Language Learning", "A project to learn Spanish", "Medium", "2023-12-31", "Remember to practice every day");
-    // A project to plan a vacation
     const vacationPlanning = projectFactory("Vacation Planning", "A project to plan a trip to Hawaii", "Low", "2023-06-30", "Remember to book flights and hotels in advance");
-    // A project to write a novel
     const novelWriting = projectFactory("Novel Writing", "A project to write a fantasy novel", "High", "2023-03-31", "Remember to outline the plot and characters");
-    let projectsArray = [homeCleanup, languageLearning, vacationPlanning, novelWriting];
+    let projectsDict = {};
+    /* Example items for each project */
     // Home Cleanup
     const sweeping = itemFactory("Clean floors", "Phase 1", "High", "2023-10-25", "", ["Sweeping, Vacuuming, Mopping"])   
     const dusting = itemFactory("Dust furniture", "Phase 2", "Medium", "2023-10-26", "", ["Dusting, Wiping, Polishing"]);
@@ -37,7 +36,11 @@ export default function addDemoProjects(){
     const drafting = itemFactory("Write the first draft of the novel following the outline","Stage 2: Writing","High","2023-02-28","",["Drafting, Writing, Creating"]);
     const revising = itemFactory("Revise the draft for content, style, and grammar","Stage 3: Editing","High","2023-03-31","",["Revising, Editing, Polishing"]);
     novelWriting.items = [outlining, characterizing, worldbuilding, drafting, revising];
-    console.log(projectsArray)
-    return projectsArray
+    projectsDict[homeCleanup.title] = homeCleanup;
+    projectsDict[languageLearning.title] = languageLearning;
+    projectsDict[vacationPlanning.title] = vacationPlanning;
+    projectsDict[novelWriting.title] = novelWriting;
+    //console.log(projectsDict)
+    return projectsDict
 
 }
