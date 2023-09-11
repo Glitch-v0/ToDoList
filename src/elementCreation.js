@@ -1,4 +1,4 @@
-export function makeElement(element, parentElement, optionalClass, optionalID) {
+export function makeElement(element, parentElement, optionalClass, optionalID, attributes = {}) {
     const newElement = document.createElement(element);
     if (typeof optionalClass !== "undefined") {
       newElement.className = optionalClass;
@@ -6,8 +6,15 @@ export function makeElement(element, parentElement, optionalClass, optionalID) {
     if (typeof optionalID !== "undefined") {
       newElement.id = optionalID;
     }
+
+    // Set additional attributes
+    for (const attr in attributes) {
+        newElement.setAttribute(attr, attributes[attr]);
+    }
+
     parentElement.appendChild(newElement);
 }
+
 
 export function makeImage(imageURL, parentElement, optionalClass, optionalID) {
     const newImage = new Image();
@@ -57,7 +64,13 @@ export function projectSelection (project){
 
 export function showItemsOfProject (project){
     [...project.items].forEach(item => {
-        makeElement("div", document.querySelector('.item-container-outer'), 'item', `item-container:${item.title}`)
+        let itemContainerID = `item-container:${item.title}`;
+        let checkboxID = `checkbox:${item.title}`;
+        let labelID = `label:${item.title}`;
+        makeElement("div", document.querySelector('.item-container-outer'), 'item', itemContainerID);
+        makeElement("input", document.getElementById(itemContainerID), 'checkbox', checkboxID, { type: "checkbox" });
+        makeElement("label", document.getElementById(itemContainerID), 'label', labelID, { type: "label" });
+        styleElementID(labelID, "innerHTML", `${item.title}`)
     });
 }
 

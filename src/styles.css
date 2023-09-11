@@ -16,6 +16,8 @@ body {
 }
 
 .item-container-outer {
+    display: flex;
+    flex-direction: column;
     height: 100vh;
     flex-grow: 5;
     background-color: rgb(128, 255, 128);
