@@ -1,4 +1,6 @@
-import expand from './icons/expand-icon.png'
+import expand from './icons/expand-icon.png';
+import description from './icons/description-icon.png';
+import plus from './icons/plus-icon.png';
 
 export function makeElement(element, parentElement, optionalClass, optionalID, attributes = {}) {
     const newElement = document.createElement(element);
@@ -84,6 +86,8 @@ export function createDropdown (optionsArray, parentElementID, item){
 }
 
 export function showItemsOfProject (project){
+    //Description Icon
+    makeImage(plus, document.getElementById("item-container-outer"), "plus", 'item-plus');
     [...project.items].forEach(item => {
         const itemPosition = `${project.items.indexOf(item)}`
         let itemContainerID = `item-container:${itemPosition}`;
@@ -94,7 +98,7 @@ export function showItemsOfProject (project){
         let SelectorID = `Priority Selector-${item.itemPosition}`;
         let labeldueDateID = `label:${itemPosition}-dueDate:${item.dueDate}`;;
 
-        makeElement("div", document.querySelector('.item-container-outer'), 'item', itemContainerID, { draggable: "true"});
+        makeElement("div", document.querySelector('.item-container-outer'), 'item', itemContainerID, { draggable: "false"});
         makeElement("input", document.getElementById(itemContainerID), 'checkbox', checkboxID, { type: "checkbox" });
         
         // Item Title
@@ -120,6 +124,9 @@ export function showItemsOfProject (project){
 
         // Expand Icon
         makeImage(expand, document.getElementById(itemContainerID), "expand", `expand-${itemPosition}`)
+
+        //Description Icon
+        makeImage(description, document.getElementById(itemContainerID), "description", `description-${itemPosition}`)
     });
 }
 
