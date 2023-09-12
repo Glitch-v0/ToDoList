@@ -22,7 +22,7 @@ export function initDisplay(){
         ec.deleteChildElements('.item-container-outer')
         ec.projectSelection(button)
         let current_project = projects[button.id]
-        console.log(current_project)
+        //console.log(current_project)
         ec.showItemsOfProject(current_project)
     })
        

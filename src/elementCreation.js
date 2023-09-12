@@ -59,27 +59,61 @@ export function deleteChildElements (parentClassOrID){
 
 export function projectSelection (project){
     project.classList.add("selected-project");
-    console.log(`Clicked ${project}`);
+    //console.log(`Clicked ${project}`);
+}
+
+export function createDropdown (optionsArray, parentElementID, item){
+    var select = document.getElementById(parentElementID)
+    
+    // Loop through the options and create option elements
+    for (var i = 0; i < optionsArray.length; i++) {
+        var option = document.createElement("option");
+        option.value = optionsArray[i];
+        option.text = optionsArray[i];
+        option.className = `priority-${optionsArray[i]}`
+    
+        // If the option value matches the item.priority, set it as selected
+        if (option.value == item.priority) {
+            option.selected = true;
+            select.className = `priority-${optionsArray[i]}`
+        }
+        select.appendChild(option);
+    }
 }
 
 export function showItemsOfProject (project){
     [...project.items].forEach(item => {
-        let itemContainerID = `item-container:${item.title}`;
-        let checkboxID = `checkbox:${item.title}`;
-        let labelTitleID = `label:${item.title}`;
-        let labelPriorityID = `label:${item.title}-priority:${item.priority}`;
+        const itemPosition = `${project.items.indexOf(item)}`
+        let itemContainerID = `item-container:${itemPosition}`;
+        let checkboxID = `checkbox:${itemPosition}`;
+        let labelTitleID = `label:${itemPosition}`;
+        let labelPriorityID = `label:${itemPosition}-priority`;
         let labelPriorityClass = `priority-${item.priority}`;
-        let labeldueDateID = `label:${item.title}-dueDate:${item.dueDate}`;
+        let SelectorID = `Priority Selector-${item.itemPosition}`;
+        let labeldueDateID = `label:${itemPosition}-dueDate:${item.dueDate}`;;
+
         makeElement("div", document.querySelector('.item-container-outer'), 'item', itemContainerID);
         makeElement("input", document.getElementById(itemContainerID), 'checkbox', checkboxID, { type: "checkbox" });
+        
         // Item Title
         makeElement("label", document.getElementById(itemContainerID), 'label-title', labelTitleID, { type: "label" });
-        styleElementID(labelTitleID, "innerHTML", `${item.title}`)
-        // Item Priority
-        makeElement("label", document.getElementById(itemContainerID), labelPriorityClass, labelPriorityID, { type: "label" });
-        styleElementID(labelPriorityID, "innerHTML", `${item.priority}`);
+        styleElementID(labelTitleID, "innerHTML", `${item.title}`);
+        document.getElementById(labelTitleID).contentEditable = true;
+        document.getElementById(labelTitleID).addEventListener("input", function() {
+            item.title = this.textContent;
+        });
+
+        /* Item Priority */
+        makeElement("select", document.getElementById(itemContainerID), 'priority-selector', labelPriorityID);
+        createDropdown(["Low", "Medium", "High"], labelPriorityID, item);
+        // Updates item.priority and the class name based on selection
+        document.getElementById(labelPriorityID).addEventListener("change", function() {
+            item.priority = this.value;
+            this.className = `priority-${item.priority}`;
+        });
+
         // Due Date
-        makeElement("label", document.getElementById(itemContainerID), 'label-dueDate', labeldueDateID, { type: "label" });
+        makeElement("input", document.getElementById(itemContainerID), 'label-dueDate', labeldueDateID, { type: "date", value: item.dueDate});
         styleElementID(labeldueDateID, "innerHTML", `${item.dueDate}`);
     });
 }
@@ -87,7 +121,7 @@ export function showItemsOfProject (project){
 export function projectRemoveSelection (projects){
     [...projects].forEach(button => {
         button.classList.remove("selected-project");
-        console.log("Removed project selection")
+        //console.log("Removed project selection")
     });
     
 }

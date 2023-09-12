@@ -7,7 +7,7 @@ body {
 }
 .project-container-outer {
     height: 100vh;
-    background-color: rgb(255, 127, 127);
+    background-color: rgb(129, 129, 129);
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -21,7 +21,8 @@ body {
     justify-content: space-evenly;
     height: 100vh;
     flex-grow: 5;
-    background-color: rgb(128, 255, 128);
+    background-color: rgb(164, 164, 164);
+    padding-left: 2.5vw;
 }
 
 .item {
@@ -50,14 +51,18 @@ body {
     font-size: 2rem;
 }
 
+.item {
+    font-size: 1.5rem;
+}
+
 button {
     border: 2px solid black;
     border-radius: 1.75rem;
 }
 
 .selected-project {
-    font-weight: 700;
-    box-shadow: 1px 1px 1px black;
-    background-color: coral;
+    font-weight: 600;
+    box-shadow: 2px 2px 4px black;
+    background-color: rgb(255, 196, 174);
 }
 
