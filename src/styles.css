@@ -31,8 +31,12 @@ body {
     gap: 10px;
 }
 
+.label-title:hover {
+    border: 1px solid black;
+}
+
 .priority-Low {
-    color: green;
+    color: rgb(0, 224, 0);
 }
 .priority-Medium {
     color: yellow;
@@ -41,6 +45,32 @@ body {
     color: red;
 }
 
+.priority-Low, .priority-Medium, .priority-High {
+    background-color: rgb(42, 42, 42);
+    text-align: center;
+    box-shadow: 1px 1px 1px black;
+    border-radius: 20px;
+}
+
+.priority-Low:hover, .priority-Medium:hover, .priority-High:hover {
+    background-color: rgb(0, 0, 0);
+    box-shadow: 2px 2px 2px black;
+}
+
+.expand {
+    height: 17px;
+    color: #0c0a00;
+}
+
+.expand:hover {
+    filter: invert(0.8) sepia(1) saturate(5);
+    image-rendering: pixelated;
+}
+
+.expand:active {
+    height: 20px;
+    filter: hue-rotate(180deg);
+}
 
 .checkbox {
     border-radius: 50%;

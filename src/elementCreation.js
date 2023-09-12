@@ -1,3 +1,5 @@
+import expand from './icons/expand-icon.png'
+
 export function makeElement(element, parentElement, optionalClass, optionalID, attributes = {}) {
     const newElement = document.createElement(element);
     if (typeof optionalClass !== "undefined") {
@@ -92,7 +94,7 @@ export function showItemsOfProject (project){
         let SelectorID = `Priority Selector-${item.itemPosition}`;
         let labeldueDateID = `label:${itemPosition}-dueDate:${item.dueDate}`;;
 
-        makeElement("div", document.querySelector('.item-container-outer'), 'item', itemContainerID);
+        makeElement("div", document.querySelector('.item-container-outer'), 'item', itemContainerID, { draggable: "true"});
         makeElement("input", document.getElementById(itemContainerID), 'checkbox', checkboxID, { type: "checkbox" });
         
         // Item Title
@@ -115,6 +117,9 @@ export function showItemsOfProject (project){
         // Due Date
         makeElement("input", document.getElementById(itemContainerID), 'label-dueDate', labeldueDateID, { type: "date", value: item.dueDate});
         styleElementID(labeldueDateID, "innerHTML", `${item.dueDate}`);
+
+        // Expand Icon
+        makeImage(expand, document.getElementById(itemContainerID), "expand", `expand-${itemPosition}`)
     });
 }
 
