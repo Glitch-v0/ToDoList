@@ -87,9 +87,28 @@ export function createDropdown (optionsArray, parentElementID, item){
 }
 
 export function showItemsOfProject (project){
-    //Description Icon
+    newItemIcon(project);
+    displayProjectItems(project);
+    console.log({project});
+}
+
+export function projectRemoveSelection (projects){
+    [...projects].forEach(button => {
+        button.classList.remove("selected-project");
+        //console.log("Removed project selection")
+    });
+    
+}
+
+export function newItemIcon (project){
     makeImage(plus, document.getElementById("item-container-outer"), "plus", 'item-plus');
-    newItem(project);
+    document.getElementById('item-plus').addEventListener("click", function () {
+        project.items.unshift(itemFactory());
+        refreshItemDisplay(project)
+    })
+}
+
+export function displayProjectItems (project) {
     [...project.items].forEach(item => {
         const itemPosition = `${project.items.indexOf(item)}`
         let itemContainerID = `item-container:${itemPosition}`;
@@ -98,7 +117,7 @@ export function showItemsOfProject (project){
         let labelPriorityID = `label:${itemPosition}-priority`;
         let labelPriorityClass = `priority-${item.priority}`;
         let SelectorID = `Priority Selector-${item.itemPosition}`;
-        let labeldueDateID = `label:${itemPosition}-dueDate:${item.dueDate}`;;
+        let labeldueDateID = `label:${itemPosition}-dueDate:${item.dueDate}`;
 
         makeElement("div", document.querySelector('.item-container-outer'), 'item', itemContainerID, { draggable: "false"});
         makeElement("input", document.getElementById(itemContainerID), 'checkbox', checkboxID, { type: "checkbox" });
@@ -125,24 +144,16 @@ export function showItemsOfProject (project){
         styleElementID(labeldueDateID, "innerHTML", `${item.dueDate}`);
 
         // Expand Icon
-        makeImage(expand, document.getElementById(itemContainerID), "expand", `expand-${itemPosition}`)
+        makeImage(expand, document.getElementById(itemContainerID), "expand", `expand-${itemPosition}`);
 
         //Description Icon
-        makeImage(description, document.getElementById(itemContainerID), "description", `description-${itemPosition}`)
-    });
-}
-
-export function projectRemoveSelection (projects){
-    [...projects].forEach(button => {
-        button.classList.remove("selected-project");
-        //console.log("Removed project selection")
-    });
-    
-}
-
-export function newItem (project){
-    document.getElementById('item-plus').addEventListener("click", function () {
-        project.items.unshift(itemFactory())
-        console.log(project)
+        makeImage(description, document.getElementById(itemContainerID), "description", `description-${itemPosition}`);
     })
+}
+
+export function refreshItemDisplay (project){
+    deleteChildElements('#item-container-outer');
+    newItemIcon(project);
+    displayProjectItems(project);
+    //ERROR -- this creates circular references! separate the creation of items from ShowItemDisplay
 }

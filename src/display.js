@@ -18,12 +18,12 @@ export function initDisplay(){
     let projects_buttons = document.getElementsByClassName("project-name");
     [...projects_buttons].forEach(button => {
         button.addEventListener("click", () => {
-        ec.projectRemoveSelection(projects_buttons)
-        ec.deleteChildElements('.item-container-outer')
-        ec.projectSelection(button)
-        let current_project = projects[button.id]
-        //console.log(current_project)
-        ec.showItemsOfProject(current_project)
+            ec.projectRemoveSelection(projects_buttons);
+            ec.deleteChildElements('.item-container-outer');
+            ec.projectSelection(button);
+            let current_project = projects[button.id];
+            //console.log(current_project);
+            ec.showItemsOfProject(current_project);
     })
     
         
