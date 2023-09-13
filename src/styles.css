@@ -7,21 +7,23 @@ body {
 }
 .project-container-outer {
     height: 100vh;
+    width: 20vw;
     background-color: rgb(129, 129, 129);
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     padding: 1vw;
-    flex-wrap: wrap;
-    overflow-y: auto;
+    flex-wrap: nowrap;
+    overflow-y: scroll;
 }
 
 .item-container-outer {
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    flex-direction: row;
+    justify-content: start;
     height: 100vh;
+    width: 80vw;
     flex-grow: 5;
     background-color: rgb(164, 164, 164);
     padding-left: 2.5vw;
@@ -33,6 +35,8 @@ body {
     display: flex;
     place-items: center;
     gap: 10px;
+    height: 10vh;
+    width: 50vw;
 }
 
 .item:hover {

@@ -103,7 +103,7 @@ export function projectRemoveSelection (projects){
 export function newItemIcon (project){
     makeImage(plus, document.getElementById("item-container-outer"), "plus", 'item-plus');
     document.getElementById('item-plus').addEventListener("click", function () {
-        project.items.unshift(itemFactory());
+        project.items.unshift(itemFactory("New Item"));
         refreshItemDisplay(project)
     })
 }
