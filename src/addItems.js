@@ -10,7 +10,7 @@ export function projectFactory (title, description, priority, dueDate, notes) {
     }
 }
 
-export function itemFactory (title, description, priority, dueDate, notes, checklist) {
+export function itemFactory (title, description, priority, dueDate, notes, checklist, parent) {
     return {
         type: "item",
         title,
@@ -18,6 +18,7 @@ export function itemFactory (title, description, priority, dueDate, notes, check
         priority,
         dueDate,
         notes,
-        checklist: []
+        checklist: [],
+        parent,
     }
 }

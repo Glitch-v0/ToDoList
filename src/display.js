@@ -25,7 +25,7 @@ export function initDisplay(){
         //console.log(current_project)
         ec.showItemsOfProject(current_project)
     })
-       
+    
         
     });
 }

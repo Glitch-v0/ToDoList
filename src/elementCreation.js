@@ -1,6 +1,7 @@
 import expand from './icons/expand-icon.png';
 import description from './icons/description-icon.png';
 import plus from './icons/plus-icon.png';
+import { itemFactory } from './addItems';
 
 export function makeElement(element, parentElement, optionalClass, optionalID, attributes = {}) {
     const newElement = document.createElement(element);
@@ -88,6 +89,7 @@ export function createDropdown (optionsArray, parentElementID, item){
 export function showItemsOfProject (project){
     //Description Icon
     makeImage(plus, document.getElementById("item-container-outer"), "plus", 'item-plus');
+    newItem(project);
     [...project.items].forEach(item => {
         const itemPosition = `${project.items.indexOf(item)}`
         let itemContainerID = `item-container:${itemPosition}`;
@@ -136,4 +138,11 @@ export function projectRemoveSelection (projects){
         //console.log("Removed project selection")
     });
     
+}
+
+export function newItem (project){
+    document.getElementById('item-plus').addEventListener("click", function () {
+        project.items.unshift(itemFactory())
+        console.log(project)
+    })
 }
