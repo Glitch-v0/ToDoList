@@ -1,7 +1,7 @@
 import expand from './icons/expand-icon.png';
 import description from './icons/description-icon.png';
 import plus from './icons/plus-icon.png';
-import { itemFactory } from './addItems';
+import { itemFactory, projectFactory } from './addItems';
 
 export function makeElement(element, parentElement, optionalClass, optionalID, attributes = {}) {
     const newElement = document.createElement(element);
@@ -57,9 +57,9 @@ export function createProjectsAndItemContainers (){
 }
 
 export function deleteChildElements (parentClassOrID){
-    //var parent = document.querySelector(".body-container");
     var parent = document.querySelector(parentClassOrID);
     parent.replaceChildren([]);
+    //console.log(`Deleted children of ${parent}`)
 }
 
 export function projectSelection (project){
@@ -108,6 +108,35 @@ export function newItemIcon (project){
     })
 }
 
+export function newProjectIcon (projects){
+    makeImage(plus, document.getElementById("project-container-outer"), "plus", 'project-plus');
+    document.getElementById('project-plus').addEventListener("click", function () {
+        projects["New Project"] = projectFactory("New Project");
+        refreshProjectDisplay(projects)
+        console.log(projects)
+        return projects
+    })
+}
+
+export function createProjectButtons (projects){
+    for (const projectTitle in projects) {
+        let project = projects[projectTitle];
+        makeElement("button", document.getElementById("project-container-outer"), "project-name", project.title);
+        styleElementID(project.title, "innerHTML", project.title);
+      }
+      let projects_buttons = document.getElementsByClassName("project-name");
+      [...projects_buttons].forEach(button => {
+          button.addEventListener("click", () => {
+              projectRemoveSelection(projects_buttons);
+              deleteChildElements('.item-container-outer');
+              projectSelection(button);
+              let current_project = projects[button.id];
+              showItemsOfProject(current_project);
+            })
+      })
+}
+
+
 export function displayProjectItems (project) {
     [...project.items].forEach(item => {
         const itemPosition = `${project.items.indexOf(item)}`
@@ -155,5 +184,11 @@ export function refreshItemDisplay (project){
     deleteChildElements('#item-container-outer');
     newItemIcon(project);
     displayProjectItems(project);
-    //ERROR -- this creates circular references! separate the creation of items from ShowItemDisplay
+}
+
+export function refreshProjectDisplay (projects){
+    //console.log("Running refreshProjectDisplay...")
+    deleteChildElements('#project-container-outer');
+    newProjectIcon(projects);
+    createProjectButtons(projects);
 }
