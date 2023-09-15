@@ -7,13 +7,11 @@ body {
 }
 .project-container-outer {
     height: 100vh;
-    width: 20vw;
+    width: 25vw;
     background-color: rgb(129, 129, 129);
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    padding: 1vw;
     flex-wrap: nowrap;
     overflow-y: scroll;
 }
@@ -23,13 +21,12 @@ body {
     flex-direction: row;
     align-items: flex-start;
     height: 100vh;
-    width: 80vw;
-    flex-grow: 5;
+    width: 75vw;
     background-color: rgb(164, 164, 164);
-    padding-left: 2.5vw;
     flex-wrap: wrap;
     overflow-y: scroll;
     scrollbar-width: none;
+    padding: 1vh;
 }
 
 .item {
@@ -38,11 +35,13 @@ body {
     gap: 10px;
     height: 10vh;
     width: 70vw;
+    font-size: 1.5rem;
 }
 
 
 .label-title:hover {
-    color: rgb(40, 248, 255);
+    color: white;
+    cursor: text;
 }
 
 .priority-Low {
@@ -79,11 +78,17 @@ body {
 .plus {
     height: 25px;
     width: 25px;
-    padding-right: 40vw;
 }
 
 #item-plus {
     padding-top: 5vh;
+    padding-right: 40vw;
+    padding-left: 2vw;
+}
+
+#project-plus {
+    padding-top: 5vh;
+    place-self: center;
 }
 
 .plus:active {
@@ -93,7 +98,6 @@ body {
 
 .expand:hover, .description:hover, .plus:hover {
     filter: invert(0.8) sepia(1) saturate(5);
-    image-rendering: pixelated;
 }
 
 .expand:active, .description:active {
@@ -106,12 +110,9 @@ body {
 
 .project-name {
     height: 8vh;
-    width: 100%;
+    width: 80%;
+    place-self: center;
     font-size: 2rem;
-}
-
-.item {
-    font-size: 1.5rem;
 }
 
 button {
@@ -125,3 +126,7 @@ button {
     background-color: rgb(255, 196, 174);
 }
 
+dialog {
+    width: 20vw;
+    font-size: 1.5rem;
+}

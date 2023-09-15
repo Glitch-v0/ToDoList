@@ -111,12 +111,18 @@ export function newItemIcon (project){
 export function newProjectIcon (projects, sorted_projects){
     makeImage(plus, document.getElementById("project-container-outer"), "plus", 'project-plus');
     document.getElementById('project-plus').addEventListener("click", function () {
-        projects["New Project"] = projectFactory("New Project");
-        sorted_projects.splice(0, 0, "New Project")
-        refreshProjectDisplay(projects, sorted_projects)
-        console.log(projects)
+        let key = prompt("Enter a name for your new project"); // Ask the user to enter a name
+        if (key in projects) { // Check if the name already exists in the dictionary
+            alert("This name is already taken. Please choose another one."); // Alert the user
+            return; // Exit the function
+        }
+        projects[key] = projectFactory(key); // Add the key and value to the dictionary
+        sorted_projects.splice(0, 0, key); // Add the key to the sorted array
+        refreshProjectDisplay(projects, sorted_projects); // Refresh the display
+        console.log(projects);
     })
 }
+
 
 export function createProjectButtons (projects, projectsArray){
     console.log(projectsArray)
@@ -181,7 +187,7 @@ export function displayProjectItems (project) {
         //Description Icon
         makeImage(description, document.getElementById(itemContainerID), "description", `description-${itemPosition}`);
         document.getElementById(`description-${itemPosition}`).addEventListener("click", function() {
-            makeModal(item)
+            makeModal(item, project);
         });
     })
 }
@@ -202,43 +208,101 @@ export function refreshProjectDisplay (projects, sorted_projects){
     newProjectIcon(projects, sorted_projects);
     createProjectButtons(projects, sorted_projects);
 }
+export function makeModal (item, project) {
+    let dialog = document.createElement("dialog");
 
-export function makeModal (item){
-    const newModal = document.createElement("dialog");
-    newModal.class = 'item-modal';
-    newModal.id = `item-modal-${item.id}`;
-    
-    // Create a header element with a paragraph that shows item.title
     let header = document.createElement("header");
-    let title = document.createElement("p");
-    title.textContent = item.title;
-    title.contentEditable = "true";
+    dialog.appendChild(header);
+
+    let closeButton = document.createElement("button");
+    closeButton.textContent = "X";
+    let title = document.createElement("h3");
+    title.textContent = "Title: ";
+
+    header.appendChild(closeButton);
     header.appendChild(title);
 
-    // Create a body element with a label and a paragraph that shows item.description
-    let body = document.createElement("body");
-    let label = document.createElement("label");
-    label.textContent = "Description";
-    let description = document.createElement("p");
-    description.contentEditable = "true";
+    let titleSpan = document.createElement("textArea");
+    titleSpan.setAttribute("rows", "1");
+    titleSpan.setAttribute("cols", "40");
+    titleSpan.textContent = item.title;
+    title.appendChild(titleSpan);
+
+    let section = document.createElement("section");
+    dialog.appendChild(section);
+
+    let descriptionLabel = document.createElement("label");
+    descriptionLabel.setAttribute("for", "description");
+    descriptionLabel.textContent = "Description:";
+
+    let description = document.createElement("textArea");
+    description.setAttribute("rows", "3");
+    description.setAttribute("cols", "40");
     description.textContent = item.description;
-    body.appendChild(label);
-    body.appendChild(description);
 
-    // Create a footer element with a paragraph that shows item.notes
+    section.appendChild(descriptionLabel);
+    section.appendChild(description);
+
+    // Footer and Children
     let footer = document.createElement("footer");
-    let notes = document.createElement("p");
-    notes.contentEditable = "true";
-    // Move the code across two lines using parentheses
-    item.notes == "" ? (notes.textContent = "Enter your notes here."
-    ) : (notes.textContent = item.notes);
+    dialog.appendChild(footer);
 
-    
+    let notesLabel = document.createElement("label");
+    notesLabel.setAttribute("for", "notes");
+    notesLabel.textContent = "Notes:";
+
+    let notes = document.createElement("textArea");
+    notes.setAttribute("rows", "3");
+    notes.setAttribute("cols", "40");
+    notes.textContent = item.notes;
+
+    let submitButton = document.createElement("button");
+    submitButton.textContent = "Submit";
+    let resetButton = document.createElement("button");
+    resetButton.textContent = "Reset";
+
+    footer.appendChild(notesLabel);
     footer.appendChild(notes);
+    footer.appendChild(submitButton);
+    footer.appendChild(resetButton);
 
-    newModal.appendChild(header);
-    newModal.appendChild(body);
-    newModal.appendChild(footer);
-    document.body.appendChild(newModal);
-    newModal.showModal();
+    function closeDialog() {
+        dialog.close();
+    }
+
+    function submitDialog() {
+        let description = document.getElementById("description");
+        let notes = document.getElementById("notes");
+
+        // Get the values of the title, description, and notes elements
+        let titleValue = titleSpan.textContent;
+        let descriptionValue = description.textContent;
+        let notesValue = notes.textContent;
+
+        // Do something with the values, such as updating or saving them
+        item.title = titleValue;
+        item.description = descriptionValue;
+        item.notes = notesValue;
+        // Close the dialog using the close() method
+        dialog.close();
+        refreshItemDisplay(project)
+    }
+
+    // Define a function to reset the dialog
+    function resetDialog() {
+        // Reset the values of the title, description, and notes elements to empty strings
+        titleSpan.textContent = "New Item";
+        description.textContent = "I like this a lot";
+        notes.textContent = "Remember to do it this important way";
+    }
+
+    // Add event listeners to the buttons
+    closeButton.addEventListener("click", closeDialog);
+    submitButton.addEventListener("click", submitDialog);
+    resetButton.addEventListener("click", resetDialog);
+
+
+    // Append the dialog element to the body of the document
+    document.body.appendChild(dialog);
+    dialog.showModal()
 }
