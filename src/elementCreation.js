@@ -62,7 +62,7 @@ export function deleteChildElements (parentClassOrID){
     //console.log(`Deleted children of ${parent}`)
 }
 
-export function projectSelection (project){
+export function selectProject (project){
     project.classList.add("selected-project");
     //console.log(`Clicked ${project}`);
 }
@@ -108,28 +108,31 @@ export function newItemIcon (project){
     })
 }
 
-export function newProjectIcon (projects){
+export function newProjectIcon (projects, sorted_projects){
     makeImage(plus, document.getElementById("project-container-outer"), "plus", 'project-plus');
     document.getElementById('project-plus').addEventListener("click", function () {
         projects["New Project"] = projectFactory("New Project");
-        refreshProjectDisplay(projects)
+        sorted_projects.splice(0, 0, "New Project")
+        refreshProjectDisplay(projects, sorted_projects)
         console.log(projects)
-        return projects
     })
 }
 
-export function createProjectButtons (projects){
-    for (const projectTitle in projects) {
-        let project = projects[projectTitle];
-        makeElement("button", document.getElementById("project-container-outer"), "project-name", project.title);
-        styleElementID(project.title, "innerHTML", project.title);
+export function createProjectButtons (projects, projectsArray){
+    console.log(projectsArray)
+    for (var i in projectsArray) {
+        //Text on button equal to project title
+        makeElement("button", document.getElementById("project-container-outer"), "project-name", projectsArray[i]);
+        styleElementID(projectsArray[i], "innerHTML", projectsArray[i]);
       }
+
       let projects_buttons = document.getElementsByClassName("project-name");
+      //Listens to display items for each project
       [...projects_buttons].forEach(button => {
           button.addEventListener("click", () => {
               projectRemoveSelection(projects_buttons);
               deleteChildElements('.item-container-outer');
-              projectSelection(button);
+              selectProject(button);
               let current_project = projects[button.id];
               showItemsOfProject(current_project);
             })
@@ -177,6 +180,9 @@ export function displayProjectItems (project) {
 
         //Description Icon
         makeImage(description, document.getElementById(itemContainerID), "description", `description-${itemPosition}`);
+        document.getElementById(`description-${itemPosition}`).addEventListener("click", function() {
+            makeModal(item)
+        });
     })
 }
 
@@ -186,9 +192,53 @@ export function refreshItemDisplay (project){
     displayProjectItems(project);
 }
 
-export function refreshProjectDisplay (projects){
+export function sortProjects (projects){
+    let sorted_projects = Object.keys(projects).sort();
+    return sorted_projects
+}
+export function refreshProjectDisplay (projects, sorted_projects){
     //console.log("Running refreshProjectDisplay...")
     deleteChildElements('#project-container-outer');
-    newProjectIcon(projects);
-    createProjectButtons(projects);
+    newProjectIcon(projects, sorted_projects);
+    createProjectButtons(projects, sorted_projects);
+}
+
+export function makeModal (item){
+    const newModal = document.createElement("dialog");
+    newModal.class = 'item-modal';
+    newModal.id = `item-modal-${item.id}`;
+    
+    // Create a header element with a paragraph that shows item.title
+    let header = document.createElement("header");
+    let title = document.createElement("p");
+    title.textContent = item.title;
+    title.contentEditable = "true";
+    header.appendChild(title);
+
+    // Create a body element with a label and a paragraph that shows item.description
+    let body = document.createElement("body");
+    let label = document.createElement("label");
+    label.textContent = "Description";
+    let description = document.createElement("p");
+    description.contentEditable = "true";
+    description.textContent = item.description;
+    body.appendChild(label);
+    body.appendChild(description);
+
+    // Create a footer element with a paragraph that shows item.notes
+    let footer = document.createElement("footer");
+    let notes = document.createElement("p");
+    notes.contentEditable = "true";
+    // Move the code across two lines using parentheses
+    item.notes == "" ? (notes.textContent = "Enter your notes here."
+    ) : (notes.textContent = item.notes);
+
+    
+    footer.appendChild(notes);
+
+    newModal.appendChild(header);
+    newModal.appendChild(body);
+    newModal.appendChild(footer);
+    document.body.appendChild(newModal);
+    newModal.showModal();
 }

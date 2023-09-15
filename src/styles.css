@@ -21,14 +21,15 @@ body {
 .item-container-outer {
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    align-items: flex-start;
     height: 100vh;
     width: 80vw;
     flex-grow: 5;
     background-color: rgb(164, 164, 164);
     padding-left: 2.5vw;
     flex-wrap: wrap;
-    overflow-y: auto;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 
 .item {
@@ -39,14 +40,9 @@ body {
     width: 70vw;
 }
 
-.item:hover {
-    border: 1px solid rgba(48, 79, 255, 0.577);
-    border-radius: 5px;
-}
 
 .label-title:hover {
-    border: 1px solid rgb(3, 255, 255);
-    color: rgb(255, 40, 40);
+    color: rgb(40, 248, 255);
 }
 
 .priority-Low {
@@ -74,6 +70,10 @@ body {
 .expand, .description {
     height: 17px;
     color: #0c0a00;
+}
+
+.item-modal {
+    
 }
 
 .plus {
@@ -105,7 +105,8 @@ body {
 }
 
 .project-name {
-    height: 50px;
+    height: 8vh;
+    width: 100%;
     font-size: 2rem;
 }
 
