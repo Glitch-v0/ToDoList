@@ -71,10 +71,6 @@ body {
     color: #0c0a00;
 }
 
-.item-modal {
-    
-}
-
 .plus {
     height: 25px;
     width: 25px;
@@ -129,4 +125,18 @@ button {
 dialog {
     width: 20vw;
     font-size: 1.5rem;
+}
+
+#save-icon, #delete-icon {
+    position: absolute;
+    top: 5%;
+    width: 25px;
+
+}
+#save-icon {
+    right: clamp(10px, 5vw, 5vw);
+}
+
+#delete-icon {
+    right: 7.5vw;
 }

@@ -1,6 +1,10 @@
-import expand from './icons/expand-icon.png';
-import description from './icons/description-icon.png';
-import plus from './icons/plus-icon.png';
+import expandIcon from './icons/expand-icon.png';
+import descriptionIcon from './icons/description-icon.png';
+import plusIcon from './icons/plus-icon.png';
+import saveIcon from './icons/save-icon.png';
+import deleteIcon from './icons/delete-icon.png';
+
+
 import { itemFactory, projectFactory } from './addItems';
 
 export function makeElement(element, parentElement, optionalClass, optionalID, attributes = {}) {
@@ -89,7 +93,7 @@ export function createDropdown (optionsArray, parentElementID, item){
 export function showItemsOfProject (project){
     newItemIcon(project);
     displayProjectItems(project);
-    console.log({project});
+    //console.log({project});
 }
 
 export function projectRemoveSelection (projects){
@@ -101,7 +105,7 @@ export function projectRemoveSelection (projects){
 }
 
 export function newItemIcon (project){
-    makeImage(plus, document.getElementById("item-container-outer"), "plus", 'item-plus');
+    makeImage(plusIcon, document.getElementById("item-container-outer"), "plus", 'item-plus');
     document.getElementById('item-plus').addEventListener("click", function () {
         project.items.unshift(itemFactory("New Item"));
         refreshItemDisplay(project)
@@ -109,7 +113,7 @@ export function newItemIcon (project){
 }
 
 export function newProjectIcon (projects, sorted_projects){
-    makeImage(plus, document.getElementById("project-container-outer"), "plus", 'project-plus');
+    makeImage(plusIcon, document.getElementById("project-container-outer"), "plus", 'project-plus');
     document.getElementById('project-plus').addEventListener("click", function () {
         let key = prompt("Enter a name for your new project"); // Ask the user to enter a name
         if (key in projects) { // Check if the name already exists in the dictionary
@@ -182,13 +186,16 @@ export function displayProjectItems (project) {
         styleElementID(labeldueDateID, "innerHTML", `${item.dueDate}`);
 
         // Expand Icon
-        makeImage(expand, document.getElementById(itemContainerID), "expand", `expand-${itemPosition}`);
+        makeImage(expandIcon, document.getElementById(itemContainerID), "expand", `expand-${itemPosition}`);
 
         //Description Icon
-        makeImage(description, document.getElementById(itemContainerID), "description", `description-${itemPosition}`);
+        makeImage(descriptionIcon, document.getElementById(itemContainerID), "description", `description-${itemPosition}`);
         document.getElementById(`description-${itemPosition}`).addEventListener("click", function() {
             makeModal(item, project);
         });
+
+        // Delete Icon
+                    
     })
 }
 
@@ -271,21 +278,19 @@ export function makeModal (item, project) {
     }
 
     function submitDialog() {
-        let description = document.getElementById("description");
-        let notes = document.getElementById("notes");
-
         // Get the values of the title, description, and notes elements
-        let titleValue = titleSpan.textContent;
-        let descriptionValue = description.textContent;
-        let notesValue = notes.textContent;
-
+        let titleValue = titleSpan.value;
+        let descriptionValue = description.value;
+        let notesValue = notes.value;
         // Do something with the values, such as updating or saving them
         item.title = titleValue;
         item.description = descriptionValue;
         item.notes = notesValue;
+
         // Close the dialog using the close() method
         dialog.close();
-        refreshItemDisplay(project)
+        dialog.remove();
+        refreshItemDisplay(project);
     }
 
     // Define a function to reset the dialog
@@ -305,4 +310,12 @@ export function makeModal (item, project) {
     // Append the dialog element to the body of the document
     document.body.appendChild(dialog);
     dialog.showModal()
+}
+
+export function saveButton(){
+    makeImage(saveIcon, document.body, "icon", "save-icon");
+}
+
+export function deleteButton(){
+    makeImage(deleteIcon, document.body, "icon", "delete-icon");
 }

@@ -1,6 +1,6 @@
 import addDemoProjects from "./demoProjects.js";
 
-export function load(){
+export function loadProjects(){
     let projects;
     if (isLocalStorageAvailable()) {
         if (localStorage.getItem('projects') !== null) {
@@ -17,9 +17,11 @@ export function load(){
 };
 
 
-export function save(projects){
+export function saveProjects(projects){
     localStorage.setItem('projects', projects);
 };
+
+export function deleteProjects(){};
 
 export function isLocalStorageAvailable () {
   var test = 'test';
