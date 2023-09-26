@@ -92,14 +92,6 @@ body {
     height: 28px;
 }
 
-.expand:hover, .description:hover, .plus:hover {
-    filter: invert(0.8) sepia(1) saturate(5);
-}
-
-.expand:active, .description:active {
-    height: 20px;
-}
-
 .checkbox {
     border-radius: 50%;
 }
@@ -139,4 +131,17 @@ dialog {
 
 #delete-icon {
     right: 7.5vw;
+}
+
+.item-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.item-icon:hover {
+    filter: invert(0.8) sepia(1) saturate(5);
+}
+
+.item-icon:active {
+    height: 21px;
 }

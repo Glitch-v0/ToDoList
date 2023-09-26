@@ -185,16 +185,25 @@ export function displayProjectItems (project) {
         makeElement("input", document.getElementById(itemContainerID), 'label-dueDate', labeldueDateID, { type: "date", value: item.dueDate});
         styleElementID(labeldueDateID, "innerHTML", `${item.dueDate}`);
 
-        // Expand Icon
-        makeImage(expandIcon, document.getElementById(itemContainerID), "expand", `expand-${itemPosition}`);
+        function clickableItemIcon(icon, text, clickFunction){
+            let buttonID = `${text}-button-${itemPosition}`;
+            let imageID = `${text}-${itemPosition}`;
+            makeElement("input", document.getElementById(itemContainerID), `${text}-button`, buttonID);
+            //makeImage(icon, document.getElementById(buttonID), `${text}`, imageID);
+            let buttonIcon = document.getElementById(buttonID)
+            buttonIcon.className = "item-icon";
+            buttonIcon.type = "image";
+            buttonIcon.src = icon;
+            buttonIcon.addEventListener("click", clickFunction);
+        }
 
-        //Description Icon
-        makeImage(descriptionIcon, document.getElementById(itemContainerID), "description", `description-${itemPosition}`);
-        document.getElementById(`description-${itemPosition}`).addEventListener("click", function() {
-            makeModal(item, project);
-        });
-
-        // Delete Icon
+        function test(){
+            console.log("It worked!")
+        }
+        clickableItemIcon(expandIcon, "expand", test);
+        clickableItemIcon(descriptionIcon, "description", function () {
+            return makeModal(item, project)});
+        clickableItemIcon(deleteIcon, "delete", test);
                     
     })
 }
@@ -215,6 +224,7 @@ export function refreshProjectDisplay (projects, sorted_projects){
     newProjectIcon(projects, sorted_projects);
     createProjectButtons(projects, sorted_projects);
 }
+
 export function makeModal (item, project) {
     let dialog = document.createElement("dialog");
 
