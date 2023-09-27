@@ -1,11 +1,13 @@
 import addDemoProjects from "./demoProjects.js";
+import { projects } from "./index.js";
 
 export function loadProjects(){
     let projects;
     if (isLocalStorageAvailable()) {
         if (localStorage.getItem('projects') !== null) {
             console.log('Projects are stored!');
-            projects = localStorage.getItem('projects');
+            let projectsToConvert = localStorage.getItem('projects');
+            projects = JSON.parse(projectsToConvert)
         } else {
             console.log('No projects are stored!');
             projects = addDemoProjects();
@@ -18,9 +20,8 @@ export function loadProjects(){
 
 
 export function saveProjects(){
-  let projects_to_save = {};
-  const projects = document.getElementsByClassName("project-name")
-  localStorage.setItem('projects', projects);
+  let projectsConverted = JSON.stringify(projects);
+  localStorage.setItem('projects', projectsConverted);
 };
 
 export function deleteProjects(){
