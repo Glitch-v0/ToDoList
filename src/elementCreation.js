@@ -184,6 +184,10 @@ export function displayProjectItems (project) {
         // Due Date
         makeElement("input", document.getElementById(itemContainerID), 'label-dueDate', labeldueDateID, { type: "date", value: item.dueDate});
         styleElementID(labeldueDateID, "innerHTML", `${item.dueDate}`);
+        var dateInput = document.getElementById(labeldueDateID);
+        dateInput.addEventListener("change", function() {
+            item.dueDate = dateInput.value;
+        })
 
         function clickableItemIcon(icon, text, clickFunction){
             let buttonID = `${text}-button-${itemPosition}`;

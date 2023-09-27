@@ -114,6 +114,10 @@ button {
     background-color: rgb(255, 196, 174);
 }
 
+.label-dueDate {
+    background-color: rgb(209, 222, 224);
+}
+
 dialog {
     width: 20vw;
     font-size: 1.5rem;
