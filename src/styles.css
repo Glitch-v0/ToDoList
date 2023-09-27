@@ -101,9 +101,9 @@ body {
     width: 80%;
     place-self: center;
     font-size: 2rem;
-    display: flex;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
     place-items: center;
-    justify-content: space-around;
 }
 
 button {
@@ -147,6 +147,14 @@ dialog {
 
 .item-icon:hover, .icon:hover, .plus:hover {
     filter: invert(0.8) sepia(1) saturate(5);
+}
+
+.project-delete-icon:hover{
+    filter: invert(13%) sepia(97%) saturate(5242%) hue-rotate(358deg) brightness(108%) contrast(115%);
+}
+
+.project-delete-icon:active{
+    height: 32px;
 }
 
 .item-icon:active {
