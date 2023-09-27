@@ -206,7 +206,7 @@ export function displayProjectItems (project) {
         }
         clickableItemIcon(expandIcon, "expand", test);
         clickableItemIcon(descriptionIcon, "description", function () {
-            return makeModal(item, project)});
+            return makeItemDescriptionDialog(item, project)});
         clickableItemIcon(deleteIcon, "delete", function () {
             return deleteItemFromProject(item, project)});
                     
@@ -230,7 +230,7 @@ export function refreshProjectDisplay (projects, sorted_projects){
     createProjectButtons(projects, sorted_projects);
 }
 
-export function makeModal (item, project) {
+export function makeItemDescriptionDialog (item, project) {
     let dialog = document.createElement("dialog");
 
     let header = document.createElement("header");
