@@ -5,6 +5,7 @@ import saveIcon from './icons/save-icon.png';
 import deleteIcon from './icons/delete-icon.png';
 import { saveProjects, deleteProjects } from './storage';
 import { itemFactory, projectFactory } from './addItems';
+import { projects, sorted_projects } from './index';
 
 export function makeElement(element, parentElement, optionalClass, optionalID, attributes = {}) {
     const newElement = document.createElement(element);
@@ -95,8 +96,8 @@ export function showItemsOfProject (project){
     //console.log({project});
 }
 
-export function projectRemoveSelection (projects){
-    [...projects].forEach(button => {
+export function projectRemoveSelection (buttons){
+    [...buttons].forEach(button => {
         button.classList.remove("selected-project");
         //console.log("Removed project selection")
     });
@@ -111,7 +112,7 @@ export function newItemIcon (project){
     })
 }
 
-export function newProjectIcon (projects, sorted_projects){
+export function newProjectIcon (){
     makeImage(plusIcon, document.getElementById("project-container-outer"), "plus", 'project-plus');
     document.getElementById('project-plus').addEventListener("click", function () {
         let key = prompt("Enter a name for your new project"); // Ask the user to enter a name
@@ -121,17 +122,16 @@ export function newProjectIcon (projects, sorted_projects){
         }
         projects[key] = projectFactory(key); // Add the key and value to the dictionary
         sorted_projects.splice(0, 0, key); // Add the key to the sorted array
-        refreshProjectDisplay(projects, sorted_projects); // Refresh the display
+        refreshProjectDisplay(); // Refresh the display
         console.log(projects);
     })
 }
 
 
-export function createProjectButtons (projects, projectsArray){
-    console.log(projectsArray)
-    for (var i in projectsArray) {
+export function createProjectButtons (){
+    for (var i in sorted_projects) {
         //Set button text to project title
-        const current_project_title = projectsArray[i]
+        const current_project_title = sorted_projects[i]
         makeElement("button", document.getElementById("project-container-outer"), "project-name", current_project_title);
         styleElementID(current_project_title, "innerHTML", current_project_title);
         const current_button = document.getElementById(current_project_title)
@@ -229,15 +229,11 @@ export function refreshItemDisplay (project){
     displayProjectItems(project);
 }
 
-export function sortProjects (projects){
-    let sorted_projects = Object.keys(projects).sort();
-    return sorted_projects
-}
-export function refreshProjectDisplay (projects, sorted_projects){
+export function refreshProjectDisplay (){
     //console.log("Running refreshProjectDisplay...")
     deleteChildElements('#project-container-outer');
-    newProjectIcon(projects, sorted_projects);
-    createProjectButtons(projects, sorted_projects);
+    newProjectIcon();
+    createProjectButtons(sorted_projects);
 }
 
 export function makeItemDescriptionDialog (item, project) {
@@ -337,7 +333,7 @@ export function makeItemDescriptionDialog (item, project) {
     dialog.showModal()
 }
 
-export function saveButton(projects){
+export function saveButton(){
     makeImage(saveIcon, document.body, "icon", "save-icon");
     const save_projects = document.getElementById("save-icon");
     save_projects.addEventListener("click", function() {
