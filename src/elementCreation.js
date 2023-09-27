@@ -131,9 +131,18 @@ export function newProjectIcon (projects, sorted_projects){
 export function createProjectButtons (projects, projectsArray){
     console.log(projectsArray)
     for (var i in projectsArray) {
-        //Text on button equal to project title
-        makeElement("button", document.getElementById("project-container-outer"), "project-name", projectsArray[i]);
-        styleElementID(projectsArray[i], "innerHTML", projectsArray[i]);
+        //Set button text to project title
+        const current_project_title = projectsArray[i]
+        makeElement("button", document.getElementById("project-container-outer"), "project-name", current_project_title);
+        styleElementID(current_project_title, "innerHTML", current_project_title);
+        const current_button = document.getElementById(current_project_title)
+
+        //Add delete icon for each project
+        makeImage(deleteIcon, current_button, "project-delete-icon", `${current_project_title}-delete-icon`);
+        const project_delete_icon = document.getElementById(`${current_project_title}-delete-icon`)
+        
+
+        console.log('made a button!')
       }
 
       let projects_buttons = document.getElementsByClassName("project-name");
