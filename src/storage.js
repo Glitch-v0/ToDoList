@@ -17,11 +17,15 @@ export function loadProjects(){
 };
 
 
-export function saveProjects(projects){
-    localStorage.setItem('projects', projects);
+export function saveProjects(){
+  let projects_to_save = {};
+  const projects = document.getElementsByClassName("project-name")
+  localStorage.setItem('projects', projects);
 };
 
-export function deleteProjects(){};
+export function deleteProjects(){
+  localStorage.clear()
+};
 
 export function isLocalStorageAvailable () {
   var test = 'test';

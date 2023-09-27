@@ -7,6 +7,6 @@ export function initDisplay(){
     let sorted_projects = Object.keys(projects).sort();
     ec.newProjectIcon(projects, sorted_projects);
     ec.createProjectButtons(projects, sorted_projects);
-    ec.saveButton();
+    ec.saveButton(projects);
     ec.deleteButton();
 }

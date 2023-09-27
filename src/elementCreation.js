@@ -3,8 +3,7 @@ import descriptionIcon from './icons/description-icon.png';
 import plusIcon from './icons/plus-icon.png';
 import saveIcon from './icons/save-icon.png';
 import deleteIcon from './icons/delete-icon.png';
-
-
+import { saveProjects, deleteProjects } from './storage';
 import { itemFactory, projectFactory } from './addItems';
 
 export function makeElement(element, parentElement, optionalClass, optionalID, attributes = {}) {
@@ -140,7 +139,9 @@ export function createProjectButtons (projects, projectsArray){
         //Add delete icon for each project
         makeImage(deleteIcon, current_button, "project-delete-icon", `${current_project_title}-delete-icon`);
         const project_delete_icon = document.getElementById(`${current_project_title}-delete-icon`)
-        
+        project_delete_icon.addEventListener("click", () => {
+            console.log("Deleted a project!")
+        })
 
         console.log('made a button!')
       }
@@ -336,12 +337,22 @@ export function makeItemDescriptionDialog (item, project) {
     dialog.showModal()
 }
 
-export function saveButton(){
+export function saveButton(projects){
     makeImage(saveIcon, document.body, "icon", "save-icon");
+    const save_projects = document.getElementById("save-icon");
+    save_projects.addEventListener("click", function() {
+        console.log("Saved project data")
+        saveProjects();
+    })
 }
 
 export function deleteButton(){
     makeImage(deleteIcon, document.body, "icon", "delete-icon");
+    const delete_storage = document.getElementById("delete-icon");
+    delete_storage.addEventListener("click", function() {
+        console.log("Deleted project data")
+        deleteProjects();
+    })
 }
 
 function deleteItemFromProject(item, project){
