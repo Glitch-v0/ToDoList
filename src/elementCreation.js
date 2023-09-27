@@ -203,7 +203,8 @@ export function displayProjectItems (project) {
         clickableItemIcon(expandIcon, "expand", test);
         clickableItemIcon(descriptionIcon, "description", function () {
             return makeModal(item, project)});
-        clickableItemIcon(deleteIcon, "delete", test);
+        clickableItemIcon(deleteIcon, "delete", function () {
+            return deleteItemFromProject(item, project)});
                     
     })
 }
@@ -328,4 +329,11 @@ export function saveButton(){
 
 export function deleteButton(){
     makeImage(deleteIcon, document.body, "icon", "delete-icon");
+}
+
+function deleteItemFromProject(item, project){
+    //Changes the project items to a new array without the removed item
+    project.items = project.items.filter(eachItem => eachItem !== item)
+    deleteChildElements("#item-container-outer");
+    showItemsOfProject(project);
 }
