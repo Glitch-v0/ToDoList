@@ -20,12 +20,21 @@ export function loadProjects(){
 
 
 export function saveProjects(){
-  let projectsConverted = JSON.stringify(projects);
-  localStorage.setItem('projects', projectsConverted);
+  let choice = prompt("Do you wish to save your projects to your local storage? This will override any current save data. (Type 'y' or 'n')")
+  if(choice === 'y'){
+    let projectsConverted = JSON.stringify(projects);
+    localStorage.setItem('projects', projectsConverted);
+    alert('Projects saved!')
+  }
 };
 
 export function deleteProjects(){
-  localStorage.clear()
+  let choice = prompt("Do you wish to delete your saved projects? (Type 'y' or 'n')")
+  if(choice === 'y'){
+    localStorage.clear()
+    alert('Save deleted!')
+  }
+  
 };
 
 export function isLocalStorageAvailable () {
