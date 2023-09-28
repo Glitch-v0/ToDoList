@@ -5,11 +5,9 @@ export function loadProjects(){
     let projects;
     if (isLocalStorageAvailable()) {
         if (localStorage.getItem('projects') !== null) {
-            console.log('Projects are stored!');
             let projectsToConvert = localStorage.getItem('projects');
             projects = JSON.parse(projectsToConvert)
         } else {
-            console.log('No projects are stored!');
             projects = addDemoProjects();
         }
     } else {
@@ -39,7 +37,6 @@ export function deleteProjects(){
 
 export function isLocalStorageAvailable () {
   var test = 'test';
-  console.log('Checking if storage is available...')
   try {
     localStorage.setItem (test, test);
     localStorage.removeItem (test);

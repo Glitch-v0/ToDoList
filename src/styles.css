@@ -4,9 +4,9 @@
 
 body {
     display: flex;
-}
-.project-container-outer {
     height: 100vh;
+}
+.projects-container {
     width: 25vw;
     background-color: rgb(129, 129, 129);
     display: flex;
@@ -16,11 +16,32 @@ body {
     overflow-y: scroll;
 }
 
+.project-box {
+    height: 8vh;
+    font-size: 2rem;
+    display: grid;
+    grid-template-columns: 8fr 1fr 1fr; 
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 15px;
+    gap: 15px;
+}
+
+.project-name {
+    height: 90%;
+}
+
+.selected-project {
+    font-weight: 600;
+    box-shadow: 2px 2px 4px black;
+    background-color: rgb(255, 196, 174);
+}
+
 .item-container-outer {
     display: flex;
+    height: auto;
     flex-direction: row;
     align-items: flex-start;
-    height: 100vh;
     width: 75vw;
     background-color: rgb(164, 164, 164);
     flex-wrap: wrap;
@@ -96,25 +117,9 @@ body {
     border-radius: 50%;
 }
 
-.project-name {
-    height: 8vh;
-    width: 80%;
-    place-self: center;
-    font-size: 2rem;
-    display: grid;
-    grid-template-columns: 4fr 1fr;
-    place-items: center;
-}
-
 button {
     border: 2px solid black;
     border-radius: 1.75rem;
-}
-
-.selected-project {
-    font-weight: 600;
-    box-shadow: 2px 2px 4px black;
-    background-color: rgb(255, 196, 174);
 }
 
 .label-dueDate {
@@ -149,12 +154,19 @@ dialog {
     filter: invert(0.8) sepia(1) saturate(5);
 }
 
+.project-delete-icon, .project-description-icon {
+    height: 50%;
+}
 .project-delete-icon:hover{
     filter: invert(13%) sepia(97%) saturate(5242%) hue-rotate(358deg) brightness(108%) contrast(115%);
 }
 
-.project-delete-icon:active{
-    height: 32px;
+.project-description-icon:hover {
+    filter: invert(74%) sepia(34%) saturate(792%) hue-rotate(83deg) brightness(90%) contrast(86%);
+}
+
+.project-delete-icon:active, .project-description-icon:active{
+    height: 60%;
 }
 
 .item-icon:active {

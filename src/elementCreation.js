@@ -56,7 +56,7 @@ export function styleElementClass (elementClass, styleAttribute, styleValue){
 
 export function createProjectsAndItemContainers (){
     // Grid Container to host nav bar and body
-    makeElement("div", document.body, "project-container-outer", "project-container-outer");
+    makeElement("div", document.body, "projects-container", "projects-container");
     makeElement("div", document.body, "item-container-outer", "item-container-outer");
 }
 
@@ -113,7 +113,7 @@ export function newItemIcon (project){
 }
 
 export function newProjectIcon (){
-    makeImage(plusIcon, document.getElementById("project-container-outer"), "plus", 'project-plus');
+    makeImage(plusIcon, document.getElementById("projects-container"), "plus", 'project-plus');
     document.getElementById('project-plus').addEventListener("click", function () {
         let key = prompt("Enter a name for your new project"); // Ask the user to enter a name
         if (key in projects) { // Check if the name already exists in the dictionary
@@ -123,40 +123,53 @@ export function newProjectIcon (){
         projects[key] = projectFactory(key); // Add the key and value to the dictionary
         sorted_projects.splice(0, 0, key); // Add the key to the sorted array
         refreshProjectDisplay(); // Refresh the display
-        console.log(projects);
     })
 }
 
 
 export function createProjectButtons (){
     for (var i in sorted_projects) {
-        //Set button text to project title
         const current_project_title = sorted_projects[i]
-        makeElement("button", document.getElementById("project-container-outer"), "project-name", current_project_title);
-        styleElementID(current_project_title, "innerHTML", current_project_title);
-        const current_button = document.getElementById(current_project_title)
 
-        //Add delete icon for each project
-        makeImage(deleteIcon, current_button, "project-delete-icon", `${current_project_title}-delete-icon`);
-        const project_delete_icon = document.getElementById(`${current_project_title}-delete-icon`)
-        project_delete_icon.addEventListener("click", () => {
-            console.log("Deleted a project!")
+        //Create Project Box
+        const projectBoxID = `${current_project_title}-box`
+        makeElement("div", document.getElementById("projects-container"), "project-box", projectBoxID)
+
+        //Create button for each project
+        makeElement("button", document.getElementById(projectBoxID), "project-name", current_project_title);
+        styleElementID(current_project_title, "innerHTML", current_project_title);
+        let current_button = document.getElementById(current_project_title);
+        function projectButtonFunctionality () {
+            let projects_buttons = document.getElementsByClassName("project-name");
+            projectRemoveSelection(projects_buttons);
+            deleteChildElements('.item-container-outer');
+            selectProject(current_button);
+            let current_project = projects[current_project_title];
+            showItemsOfProject(current_project);
+        }
+        current_button.addEventListener('click', projectButtonFunctionality);
+
+        //Add description icon for each project
+        makeImage(descriptionIcon, document.getElementById(projectBoxID), "project-description-icon", `${current_project_title}-description-icon`);
+        const project_description_icon = document.getElementById(`${current_project_title}-description-icon`)
+        project_description_icon.addEventListener("click", () => {
+            console.log('Clicked on project description!')
+            const parent = document.getElementById("projects-container")
         })
 
-        console.log('made a button!')
+        //Add delete icon for each project
+        makeImage(deleteIcon, document.getElementById(projectBoxID), "project-delete-icon", `${current_project_title}-delete-icon`);
+        const project_delete_icon = document.getElementById(`${current_project_title}-delete-icon`)
+        project_delete_icon.addEventListener("click", () => {
+            deleteChildElements('#item-container-outer');
+            const parent = document.getElementById("projects-container")
+            parent.removeChild(document.getElementById(projectBoxID));
+            let currentIndex = sorted_projects.indexOf(current_project_title)
+            sorted_projects.splice(currentIndex, 1)
+            console.log({sorted_projects})
+            delete projects[current_project_title];
+        })
       }
-
-      let projects_buttons = document.getElementsByClassName("project-name");
-      //Listens to display items for each project
-      [...projects_buttons].forEach(button => {
-          button.addEventListener("click", () => {
-              projectRemoveSelection(projects_buttons);
-              deleteChildElements('.item-container-outer');
-              selectProject(button);
-              let current_project = projects[button.id];
-              showItemsOfProject(current_project);
-            })
-      })
 }
 
 
@@ -231,9 +244,9 @@ export function refreshItemDisplay (project){
 
 export function refreshProjectDisplay (){
     //console.log("Running refreshProjectDisplay...")
-    deleteChildElements('#project-container-outer');
+    deleteChildElements('#projects-container');
     newProjectIcon();
-    createProjectButtons(sorted_projects);
+    createProjectButtons();
 }
 
 export function makeItemDescriptionDialog (item, project) {
@@ -357,3 +370,11 @@ function deleteItemFromProject(item, project){
     deleteChildElements("#item-container-outer");
     showItemsOfProject(project);
 }
+
+export function initDisplay(){
+    createProjectsAndItemContainers();
+    newProjectIcon();
+    createProjectButtons();
+    saveButton();
+    deleteButton();
+};
