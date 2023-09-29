@@ -226,29 +226,44 @@ export function displayProjectItems (project) {
         }
 
         function expandList(){
-            //Replace item container with a div
-            var newDiv = document.createElement("div");
-            newDiv.className = "itemExpanded";
-            newDiv.id = `${itemContainerID}-expanded`
-            var itemElement = document.getElementById(`item-container:${itemPosition}`)
+            // Get the element by id
+            var newDiv = document.getElementById(`${itemContainerID}-expanded`);
 
-            //The ol' reddit switcheroo
-            itemElement.replaceWith(newDiv);
-            newDiv.appendChild(itemElement);
+            if (newDiv === null) {
+                // Create a new div element
+                newDiv = document.createElement("div");
+                newDiv.className = "itemExpanded";
+                newDiv.id = `${itemContainerID}-expanded`;
+                var itemElement = document.getElementById(`item-container:${itemPosition}`);
 
-            //Add a ul to the div for the checklist items
-            makeElement("ul", document.getElementById(`${itemContainerID}-expanded`), "itemUL", `${itemContainerID}-UL`);
-            console.log(item.checklist.length)
-            console.log(item.checklist)
-            //Add every checklist item to the ul
-            for (let i = 0; i < item.checklist.length; i++) {
-                var current_checklist_item = item.checklist[i];
-                console.log(current_checklist_item)
-                makeElement("li", document.getElementById(`${itemContainerID}-UL`), "checklist-item", `checklist-item-${i}-${itemContainerID}`);
-                const checklistItem = document.getElementById(`checklist-item-${i}-${itemContainerID}`);
-                checklistItem.textContent = current_checklist_item;
-                
+                // The ol' reddit switcheroo
+                itemElement.replaceWith(newDiv);
+                newDiv.appendChild(itemElement);
+
+                // Add a ul to the div for the checklist items
+                makeElement("ul", document.getElementById(`${itemContainerID}-expanded`), "itemUL", `${itemContainerID}-UL`);
+                console.log(item.checklist.length);
+                console.log(item.checklist);
+                // Add every checklist item to the ul
+                for (let i = 0; i < item.checklist.length; i++) {
+                    var current_checklist_item = item.checklist[i];
+                    console.log(current_checklist_item);
+                    makeElement("li", document.getElementById(`${itemContainerID}-UL`), "checklist-item", `checklist-item-${i}-${itemContainerID}`);
+                    const checklistItem = document.getElementById(`checklist-item-${i}-${itemContainerID}`);
+                    checklistItem.textContent = current_checklist_item;
+                                
+                }
+            } else {
+                var itemElement = newDiv.firstChild;
+
+                // Remove the ul element that is a sibling of the itemElement
+                var ul = itemElement.nextSibling;
+                newDiv.removeChild(ul);
+              
+                // Replace the newDiv with the itemElement
+                newDiv.replaceWith(itemElement);
             }
+
         }
         clickableItemIcon(expandIcon, "expand", expandList);
         clickableItemIcon(descriptionIcon, "description", function () {

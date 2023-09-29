@@ -65,6 +65,18 @@ body {
     flex-direction: column;
 }
 
+.itemUL {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    padding-left: 2.5vw;
+}
+
+.checklist-item {
+    list-style-type: square;
+    font-size: 1.25rem;
+}
+
 .label-title:hover {
     color: white;
     cursor: text;
