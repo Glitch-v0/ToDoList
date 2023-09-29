@@ -239,6 +239,7 @@ export function displayProjectItems (project) {
             //Add a ul to the div for the checklist items
             makeElement("ul", document.getElementById(`${itemContainerID}-expanded`), "itemUL", `${itemContainerID}-UL`);
             console.log(item.checklist.length)
+            console.log(item.checklist)
             //Add every checklist item to the ul
             for (let i = 0; i < item.checklist.length; i++) {
                 const current_checklist_item = item.checklist[i];
