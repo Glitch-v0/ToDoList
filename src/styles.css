@@ -60,6 +60,10 @@ body {
     font-size: 1.5rem;
 }
 
+.itemExpanded {
+    display: flex;
+    flex-direction: column;
+}
 
 .label-title:hover {
     color: white;

@@ -18,7 +18,7 @@ export function itemFactory (title, description, priority, dueDate, notes, check
         priority,
         dueDate,
         notes,
-        checklist: [],
+        checklist,
         parent,
     }
 }
