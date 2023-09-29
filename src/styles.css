@@ -20,11 +20,11 @@ body {
     height: 8vh;
     font-size: 2rem;
     display: grid;
-    grid-template-columns: 8fr 1fr 1fr; 
+    grid-template-columns: 12fr 1fr 1fr; 
     align-items: center;
-    padding-left: 15px;
-    padding-right: 15px;
-    gap: 15px;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    gap: 0.5vw;
 }
 
 .project-name {
@@ -48,6 +48,7 @@ body {
     overflow-y: scroll;
     scrollbar-width: none;
     padding: 1vh;
+    padding-left: 1vw;
 }
 
 .item {
@@ -155,7 +156,7 @@ dialog {
 }
 
 .project-delete-icon, .project-description-icon {
-    height: 50%;
+    height: 55%;
 }
 .project-delete-icon:hover{
     filter: invert(13%) sepia(97%) saturate(5242%) hue-rotate(358deg) brightness(108%) contrast(115%);

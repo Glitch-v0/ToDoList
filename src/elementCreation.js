@@ -152,10 +152,9 @@ export function createProjectButtons (){
         //Add description icon for each project
         makeImage(descriptionIcon, document.getElementById(projectBoxID), "project-description-icon", `${current_project_title}-description-icon`);
         const project_description_icon = document.getElementById(`${current_project_title}-description-icon`)
-        project_description_icon.addEventListener("click", () => {
-            console.log('Clicked on project description!')
-            const parent = document.getElementById("projects-container")
-        })
+        project_description_icon.addEventListener("click", function () {
+            return makeProjectDescriptionDialog(projects[current_project_title])
+        });
 
         //Add delete icon for each project
         makeImage(deleteIcon, document.getElementById(projectBoxID), "project-delete-icon", `${current_project_title}-delete-icon`);
@@ -166,8 +165,10 @@ export function createProjectButtons (){
             parent.removeChild(document.getElementById(projectBoxID));
             let currentIndex = sorted_projects.indexOf(current_project_title)
             sorted_projects.splice(currentIndex, 1)
-            console.log({sorted_projects})
+            //console.log({sorted_projects})
+            console.log(projects);
             delete projects[current_project_title];
+            console.log(projects);
         })
       }
 }
@@ -346,6 +347,123 @@ export function makeItemDescriptionDialog (item, project) {
     dialog.showModal()
 }
 
+export function makeProjectDescriptionDialog (project) {
+    console.log(`Current project: ${project.title}`)
+    console.log(`Sorted projects: ${sorted_projects}`)
+    let dialog = document.createElement("dialog");
+
+    let header = document.createElement("header");
+    dialog.appendChild(header);
+
+    let closeButton = document.createElement("button");
+    closeButton.textContent = "X";
+    let title = document.createElement("h3");
+    title.textContent = "Title: ";
+
+    header.appendChild(closeButton);
+    header.appendChild(title);
+
+    let titleSpan = document.createElement("textArea");
+    titleSpan.setAttribute("rows", "1");
+    titleSpan.setAttribute("cols", "40");
+    titleSpan.textContent = project.title;
+    title.appendChild(titleSpan);
+
+    let section = document.createElement("section");
+    dialog.appendChild(section);
+
+    let descriptionLabel = document.createElement("label");
+    descriptionLabel.setAttribute("for", "description");
+    descriptionLabel.textContent = "Description:";
+
+    let description = document.createElement("textArea");
+    description.setAttribute("rows", "3");
+    description.setAttribute("cols", "40");
+    description.textContent = project.description;
+
+    section.appendChild(descriptionLabel);
+    section.appendChild(description);
+
+    // Footer and Children
+    let footer = document.createElement("footer");
+    dialog.appendChild(footer);
+
+    let notesLabel = document.createElement("label");
+    notesLabel.setAttribute("for", "notes");
+    notesLabel.textContent = "Notes:";
+
+    let notes = document.createElement("textArea");
+    notes.setAttribute("rows", "3");
+    notes.setAttribute("cols", "40");
+    notes.textContent = project.notes;
+
+    let submitButton = document.createElement("button");
+    submitButton.textContent = "Submit";
+    let resetButton = document.createElement("button");
+    resetButton.textContent = "Reset";
+
+    footer.appendChild(notesLabel);
+    footer.appendChild(notes);
+    footer.appendChild(submitButton);
+    footer.appendChild(resetButton);
+
+    function closeDialog() {
+        dialog.close();
+    }
+
+    function submitDialog() {
+        // Get the values of the title, description, and notes elements
+        let titleValue = titleSpan.value;
+        let descriptionValue = description.value;
+        let notesValue = notes.value;
+
+        const buttonToChange = document.getElementById(project.title);
+        //console.log({buttonToChange})
+        buttonToChange.textContent = titleValue;
+        buttonToChange.id = titleValue;
+
+        //Make a copy of project before changes
+        let saved_project = project;
+        let saved_index = sorted_projects.indexOf(project.title);
+        console.log(`Saved index = ${saved_index}`)
+        console.log(`Correct index? = ${sorted_projects[saved_index]}`)
+        //Change current project values
+        project.title = titleValue;
+        project.description = descriptionValue;
+        project.notes = notesValue;
+
+        delete projects[saved_project.title];
+        projects[project.title] = project;
+        console.log(`Correct new project below?`)
+        console.log(projects[project.title])
+        sorted_projects[saved_index] = project.title;
+        console.log(`Is this the correct list of projects? ${projects}`);
+        console.log({sorted_projects});
+
+
+        // Close the dialog using the close() method
+        dialog.close();
+        dialog.remove();
+    }
+
+    // Define a function to reset the dialog
+    function resetDialog() {
+        // Reset the values of the title, description, and notes elements to empty strings
+        titleSpan.textContent = "New Project";
+        description.textContent = "This will be a great list of things to do";
+        notes.textContent = "They're expecting a GIRL baby";
+    }
+
+    // Add event listeners to the buttons
+    closeButton.addEventListener("click", closeDialog);
+    submitButton.addEventListener("click", submitDialog);
+    resetButton.addEventListener("click", resetDialog);
+
+
+    // Append the dialog element to the body of the document
+    document.body.appendChild(dialog);
+    dialog.showModal()
+}
 export function saveButton(){
     makeImage(saveIcon, document.body, "icon", "save-icon");
     const save_projects = document.getElementById("save-icon");
