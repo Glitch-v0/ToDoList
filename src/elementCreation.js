@@ -242,9 +242,11 @@ export function displayProjectItems (project) {
             console.log(item.checklist)
             //Add every checklist item to the ul
             for (let i = 0; i < item.checklist.length; i++) {
-                const current_checklist_item = item.checklist[i];
+                var current_checklist_item = item.checklist[i];
                 console.log(current_checklist_item)
-                makeElement("li", document.getElementById(`${itemContainerID}-UL`), "checklist-item", `checklist-item-${i}`)
+                makeElement("li", document.getElementById(`${itemContainerID}-UL`), "checklist-item", `checklist-item-${i}-${itemContainerID}`);
+                const checklistItem = document.getElementById(`checklist-item-${i}-${itemContainerID}`);
+                checklistItem.textContent = current_checklist_item;
                 
             }
         }
