@@ -37,20 +37,20 @@ export function makeImage(imageURL, parentElement, optionalClass, optionalID) {
     parentElement.appendChild(newImage);
 }
 
-export function styleElementID (elementID, styleAttribute, stylecheckedValue){
+export function styleElementID (elementID, styleAttribute, styleValue){
     const elementToStyle = document.getElementById(elementID)
     if(styleAttribute == "innerHTML"){
-        elementToStyle.innerHTML = stylecheckedValue;
+        elementToStyle.innerHTML = styleValue;
     } else {
-        elementToStyle.style[styleAttribute] = stylecheckedValue;
+        elementToStyle.style[styleAttribute] = styleValue;
     }
     // console.log(`Styling ${elementToStyle} with ${styleAttribute} set to ${stylecheckedValue}`)
     // console.log(elementToStyle.style[styleAttribute] = stylecheckedValue)
 }
 
-export function styleElementClass (elementClass, styleAttribute, stylecheckedValue){
+export function styleElementClass (elementClass, styleAttribute, styleValue){
     const elementToStyle = document.getElementByClassName(elementClass)
-    elementToStyle.style[styleAttribute] = stylecheckedValue;
+    elementToStyle.style[styleAttribute] = styleValue;
     //console.log(`Styling ${elementToStyle} with ${styleAttribute} set to ${elementToStyle.style[styleAttribute]}`)
 }
 
@@ -106,6 +106,18 @@ export function projectRemoveSelection (buttons){
 
 export function newItemIcon (project){
     makeImage(plusIcon, document.getElementById("item-container-outer"), "plus", 'item-plus');
+    makeElement("p", document.getElementById("item-container-outer"), "plus-hover-text", 'item-plus-hover-text');
+    const hoverText = document.getElementById('item-plus-hover-text');
+    hoverText.innerHTML = `Add a <b>new item</b> to your project`;
+    hoverText.hidden = true;
+    document.getElementById('item-plus').addEventListener("mouseover", function (){
+        hoverText.toggleAttribute("hidden");
+        //console.log("Hover text hidden? " + hoverText.hidden)
+    })
+    document.getElementById('item-plus').addEventListener("mouseleave", function (){
+        hoverText.toggleAttribute("hidden");
+        //console.log("Hover text hidden? " + hoverText.hidden)
+    })
     document.getElementById('item-plus').addEventListener("click", function () {
         project.items.unshift(itemFactory("New Item"));
         refreshItemDisplay(project)
@@ -114,6 +126,19 @@ export function newItemIcon (project){
 
 export function newProjectIcon (){
     makeImage(plusIcon, document.getElementById("projects-container"), "plus", 'project-plus');
+    const newProjectPlusIcon = document.getElementById('project-plus');
+    makeElement("p", document.getElementById("projects-container"), "plus-hover-text", 'project-plus-hover-text');
+    const hoverText = document.getElementById('project-plus-hover-text');
+    hoverText.innerHTML = `Add a <b>new project</b> to your to-do list`;
+    hoverText.hidden = true;
+    document.getElementById('project-plus').addEventListener("mouseover", function (){
+        hoverText.toggleAttribute("hidden");
+        console.log("Hover text hidden? " + hoverText.hidden)
+    })
+    document.getElementById('project-plus').addEventListener("mouseleave", function (){
+        hoverText.toggleAttribute("hidden");
+        console.log("Hover text hidden? " + hoverText.hidden)
+    })
     document.getElementById('project-plus').addEventListener("click", function () {
         let checklistKey = prompt("Enter a name for your new project"); // Ask the user to enter a name
         if (checklistKey in projects) { // Check if the name already exists in the dictionary
@@ -181,9 +206,8 @@ export function displayProjectItems (project) {
         let checkboxID = `checkbox:${itemPosition}`;
         let labelTitleID = `label:${itemPosition}`;
         let labelPriorityID = `label:${itemPosition}-priority`;
-        let labelPriorityClass = `priority-${item.priority}`;
-        let SelectorID = `Priority Selector-${item.itemPosition}`;
         let labeldueDateID = `label:${itemPosition}-dueDate:${item.dueDate}`;
+        console.log({item})
 
         makeElement("div", document.querySelector('.item-container-outer'), 'item', itemContainerID, { draggable: "false"});
         makeElement("input", document.getElementById(itemContainerID), 'checkbox', checkboxID, { type: "checkbox" });
@@ -201,16 +225,18 @@ export function displayProjectItems (project) {
         createDropdown(["Low", "Medium", "High"], labelPriorityID, item);
         // Updates item.priority and the class name based on selection
         document.getElementById(labelPriorityID).addEventListener("change", function() {
-            item.priority = this.checkedValue;
+            item.priority = this.value;
             this.className = `priority-${item.priority}`;
         });
 
         // Due Date
-        makeElement("input", document.getElementById(itemContainerID), 'label-dueDate', labeldueDateID, { type: "date", checkedValue: item.dueDate});
+        makeElement("input", document.getElementById(itemContainerID), 'label-dueDate', labeldueDateID, { type: "date", value: item.dueDate});
         styleElementID(labeldueDateID, "innerHTML", `${item.dueDate}`);
+        console.log(item.dueDate)
         var dateInput = document.getElementById(labeldueDateID);
         dateInput.addEventListener("change", function() {
-            item.dueDate = dateInput.checkedValue;
+            item.dueDate = dateInput.value;
+            console.log(item.dueDate)
         })
 
         function clickableItemIcon(icon, text, clickFunction){
@@ -243,6 +269,28 @@ export function displayProjectItems (project) {
                 // Add a ul to the div for the checklist items
                 makeElement("ul", document.getElementById(`${itemContainerID}-expanded`), "itemUL", `${itemContainerID}-UL`);
                 console.log(item.checklist);
+
+                // Add a plus icon for new checklist items
+                makeImage(plusIcon, document.getElementById(`${itemContainerID}-UL`), "checklist-icon", (itemContainerID + "-plus-icon"));
+                const newChecklistItem = document.getElementById((itemContainerID + "-plus-icon"));
+                makeElement("p", document.getElementById(`${itemContainerID}-UL`), "plus-hover-text", 'checklist-item-plus-hover-text');
+                const hoverText = document.getElementById('checklist-item-plus-hover-text');
+                hoverText.innerHTML = `Add a <b>new step</b> to your item`;
+                hoverText.hidden = true;
+                document.getElementById((itemContainerID + "-plus-icon")).addEventListener("mouseover", function (){
+                    hoverText.toggleAttribute("hidden");
+                    console.log("Hover text hidden? " + hoverText.hidden)
+                })
+                document.getElementById((itemContainerID + "-plus-icon")).addEventListener("mouseleave", function (){
+                    hoverText.toggleAttribute("hidden");
+                    console.log("Hover text hidden? " + hoverText.hidden)
+                })
+                newChecklistItem.addEventListener("click", function (){
+                    item.checklist["New step"] = false;
+                    expandList();
+                    expandList();
+                })
+
                 // Add every checklist item to the ul
                 for (const checklistKey in item.checklist) {
                     console.log({checklistKey})
@@ -381,13 +429,13 @@ export function makeItemDescriptionDialog (item, project) {
 
     function submitDialog() {
         // Get the checkedValues of the title, description, and notes elements
-        let titlecheckedValue = titleSpan.checkedValue;
-        let descriptioncheckedValue = description.checkedValue;
-        let notescheckedValue = notes.checkedValue;
+        let titleValue = titleSpan.value;
+        let descriptionValue = description.value;
+        let notesValue = notes.value;
         // Do something with the checkedValues, such as updating or saving them
-        item.title = titlecheckedValue;
-        item.description = descriptioncheckedValue;
-        item.notes = notescheckedValue;
+        item.title = titleValue;
+        item.description = descriptionValue;
+        item.notes = notesValue;
 
         // Close the dialog using the close() method
         dialog.close();
@@ -480,14 +528,14 @@ export function makeProjectDescriptionDialog (project) {
 
     function submitDialog() {
         // Get the checkedValues of the title, description, and notes elements
-        let titlecheckedValue = titleSpan.checkedValue;
-        let descriptioncheckedValue = description.checkedValue;
-        let notescheckedValue = notes.checkedValue;
+        let titleValue = titleSpan.value;
+        let descriptionValue = description.value;
+        let notesValue = notes.value;
 
         const buttonToChange = document.getElementById(project.title);
         //console.log({buttonToChange})
-        buttonToChange.textContent = titlecheckedValue;
-        buttonToChange.id = titlecheckedValue;
+        buttonToChange.textContent = titleValue;
+        buttonToChange.id = titleValue;
 
         //Make a copy of project before changes
         let saved_project = project;
@@ -495,9 +543,9 @@ export function makeProjectDescriptionDialog (project) {
         console.log(`Saved index = ${saved_index}`)
         console.log(`Correct index? = ${sorted_projects[saved_index]}`)
         //Change current project checkedValues
-        project.title = titlecheckedValue;
-        project.description = descriptioncheckedValue;
-        project.notes = notescheckedValue;
+        project.title = titleValue;
+        project.description = descriptionValue;
+        project.notes = notesValue;
 
         delete projects[saved_project.title];
         projects[project.title] = project;
@@ -515,7 +563,7 @@ export function makeProjectDescriptionDialog (project) {
 
     // Define a function to reset the dialog
     function resetDialog() {
-        // Reset the checkedValues of the title, description, and notes elements to empty strings
+        // Reset the values of the title, description, and notes elements to empty strings
         titleSpan.textContent = "New Project";
         description.textContent = "This will be a great list of things to do";
         notes.textContent = "They're expecting a GIRL baby";

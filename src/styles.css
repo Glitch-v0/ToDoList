@@ -6,6 +6,9 @@ body {
     display: flex;
     height: 100vh;
 }
+
+b { font-weight: bold; }
+
 .projects-container {
     width: 25vw;
     background-color: rgb(129, 129, 129);
@@ -125,6 +128,27 @@ body {
 .plus {
     height: 25px;
     width: 25px;
+}
+
+#project-plus-hover-text {
+    font-size: medium;
+    position: absolute;
+    left: 3vw;
+    top: 3vh;
+}
+
+#item-plus-hover-text {
+    font-size: medium;
+    position: relative;
+    right: 44vw;
+    top: 2vh;
+}
+
+#checklist-item-plus-hover-text {
+    font-size: medium;
+    position: relative;
+    left: 3%;
+    top: -100%;
 }
 
 #item-plus {
