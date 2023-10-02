@@ -37,20 +37,20 @@ export function makeImage(imageURL, parentElement, optionalClass, optionalID) {
     parentElement.appendChild(newImage);
 }
 
-export function styleElementID (elementID, styleAttribute, styleValue){
+export function styleElementID (elementID, styleAttribute, stylecheckedValue){
     const elementToStyle = document.getElementById(elementID)
     if(styleAttribute == "innerHTML"){
-        elementToStyle.innerHTML = styleValue;
+        elementToStyle.innerHTML = stylecheckedValue;
     } else {
-        elementToStyle.style[styleAttribute] = styleValue;
+        elementToStyle.style[styleAttribute] = stylecheckedValue;
     }
-    // console.log(`Styling ${elementToStyle} with ${styleAttribute} set to ${styleValue}`)
-    // console.log(elementToStyle.style[styleAttribute] = styleValue)
+    // console.log(`Styling ${elementToStyle} with ${styleAttribute} set to ${stylecheckedValue}`)
+    // console.log(elementToStyle.style[styleAttribute] = stylecheckedValue)
 }
 
-export function styleElementClass (elementClass, styleAttribute, styleValue){
+export function styleElementClass (elementClass, styleAttribute, stylecheckedValue){
     const elementToStyle = document.getElementByClassName(elementClass)
-    elementToStyle.style[styleAttribute] = styleValue;
+    elementToStyle.style[styleAttribute] = stylecheckedValue;
     //console.log(`Styling ${elementToStyle} with ${styleAttribute} set to ${elementToStyle.style[styleAttribute]}`)
 }
 
@@ -77,12 +77,12 @@ export function createDropdown (optionsArray, parentElementID, item){
     // Loop through the options and create option elements
     for (var i = 0; i < optionsArray.length; i++) {
         var option = document.createElement("option");
-        option.value = optionsArray[i];
+        option.checkedValue = optionsArray[i];
         option.text = optionsArray[i];
         option.className = `priority-${optionsArray[i]}`
     
-        // If the option value matches the item.priority, set it as selected
-        if (option.value == item.priority) {
+        // If the option checkedValue matches the item.priority, set it as selected
+        if (option.checkedValue == item.priority) {
             option.selected = true;
             select.className = `priority-${optionsArray[i]}`
         }
@@ -115,13 +115,13 @@ export function newItemIcon (project){
 export function newProjectIcon (){
     makeImage(plusIcon, document.getElementById("projects-container"), "plus", 'project-plus');
     document.getElementById('project-plus').addEventListener("click", function () {
-        let key = prompt("Enter a name for your new project"); // Ask the user to enter a name
-        if (key in projects) { // Check if the name already exists in the dictionary
+        let checklistKey = prompt("Enter a name for your new project"); // Ask the user to enter a name
+        if (checklistKey in projects) { // Check if the name already exists in the dictionary
             alert("This name is already taken. Please choose another one."); // Alert the user
             return; // Exit the function
         }
-        projects[key] = projectFactory(key); // Add the key and value to the dictionary
-        sorted_projects.splice(0, 0, key); // Add the key to the sorted array
+        projects[checklistKey] = projectFactory(checklistKey); // Add the checklistKey and checkedValue to the dictionary
+        sorted_projects.splice(0, 0, checklistKey); // Add the checklistKey to the sorted array
         refreshProjectDisplay(); // Refresh the display
     })
 }
@@ -201,16 +201,16 @@ export function displayProjectItems (project) {
         createDropdown(["Low", "Medium", "High"], labelPriorityID, item);
         // Updates item.priority and the class name based on selection
         document.getElementById(labelPriorityID).addEventListener("change", function() {
-            item.priority = this.value;
+            item.priority = this.checkedValue;
             this.className = `priority-${item.priority}`;
         });
 
         // Due Date
-        makeElement("input", document.getElementById(itemContainerID), 'label-dueDate', labeldueDateID, { type: "date", value: item.dueDate});
+        makeElement("input", document.getElementById(itemContainerID), 'label-dueDate', labeldueDateID, { type: "date", checkedValue: item.dueDate});
         styleElementID(labeldueDateID, "innerHTML", `${item.dueDate}`);
         var dateInput = document.getElementById(labeldueDateID);
         dateInput.addEventListener("change", function() {
-            item.dueDate = dateInput.value;
+            item.dueDate = dateInput.checkedValue;
         })
 
         function clickableItemIcon(icon, text, clickFunction){
@@ -242,16 +242,46 @@ export function displayProjectItems (project) {
 
                 // Add a ul to the div for the checklist items
                 makeElement("ul", document.getElementById(`${itemContainerID}-expanded`), "itemUL", `${itemContainerID}-UL`);
-                console.log(item.checklist.length);
                 console.log(item.checklist);
                 // Add every checklist item to the ul
-                for (let i = 0; i < item.checklist.length; i++) {
-                    var current_checklist_item = item.checklist[i];
-                    console.log(current_checklist_item);
-                    makeElement("li", document.getElementById(`${itemContainerID}-UL`), "checklist-item", `checklist-item-${i}-${itemContainerID}`);
-                    const checklistItem = document.getElementById(`checklist-item-${i}-${itemContainerID}`);
-                    checklistItem.textContent = current_checklist_item;
-                                
+                for (const checklistKey in item.checklist) {
+                    console.log({checklistKey})
+                    var checkedValue = item.checklist[checklistKey]
+                    console.log({checkedValue})
+                    // The container for each checklist item
+                    makeElement("div", document.getElementById(`${itemContainerID}-UL`), "checklist-item-container", `${itemContainerID}-${checklistKey}`);
+                    const currentContainer = document.getElementById(`${itemContainerID}-${checklistKey}`)
+                    // A checkbox
+                    makeElement("input", currentContainer, "checklist-item-checkbox", `${itemContainerID}-${checklistKey}-checkbox`, { type: "checkbox" });
+                    const currentCheckbox = document.getElementById(`${itemContainerID}-${checklistKey}-checkbox`);
+                    currentCheckbox.addEventListener("change", function () {
+                        // Sets the checked property to true or false
+                        item.checklist[checklistKey] = currentCheckbox.checked ? true : false;
+                    })
+                    if (checkedValue==true){
+                        currentCheckbox.checked = true;
+                    }
+                    // The checklist item's text
+                    makeElement("li", currentContainer, "checklist-item", `checklist-item-${checklistKey}-${itemContainerID}`);
+                    const checklistItem = document.getElementById(`checklist-item-${checklistKey}-${itemContainerID}`);
+                    checklistItem.textContent = checklistKey;
+                    checklistItem.contentEditable = true;
+                    checklistItem.addEventListener("blur", function (){
+                        let newKey = checklistItem.textContent;
+                        item.checklist[newKey] = currentCheckbox.checked;
+                        delete item.checklist[checklistKey];
+                        console.log('Changed!')
+                    })
+                    // A delete icon
+                    makeImage(deleteIcon, currentContainer, "checklist-icon", (checklistKey + "-delete-icon"));
+                    const deleteChecklistItem = document.getElementById((checklistKey + "-delete-icon"));
+                    deleteChecklistItem.addEventListener("click", function(){
+                        delete item.checklist[checklistKey];
+                        console.log(`Deleted ${checklistKey}.`)
+                        console.log({item})
+                        expandList();
+                        expandList();
+                    })
                 }
             } else {
                 var itemElement = newDiv.firstChild;
@@ -350,14 +380,14 @@ export function makeItemDescriptionDialog (item, project) {
     }
 
     function submitDialog() {
-        // Get the values of the title, description, and notes elements
-        let titleValue = titleSpan.value;
-        let descriptionValue = description.value;
-        let notesValue = notes.value;
-        // Do something with the values, such as updating or saving them
-        item.title = titleValue;
-        item.description = descriptionValue;
-        item.notes = notesValue;
+        // Get the checkedValues of the title, description, and notes elements
+        let titlecheckedValue = titleSpan.checkedValue;
+        let descriptioncheckedValue = description.checkedValue;
+        let notescheckedValue = notes.checkedValue;
+        // Do something with the checkedValues, such as updating or saving them
+        item.title = titlecheckedValue;
+        item.description = descriptioncheckedValue;
+        item.notes = notescheckedValue;
 
         // Close the dialog using the close() method
         dialog.close();
@@ -367,7 +397,7 @@ export function makeItemDescriptionDialog (item, project) {
 
     // Define a function to reset the dialog
     function resetDialog() {
-        // Reset the values of the title, description, and notes elements to empty strings
+        // Reset the checkedValues of the title, description, and notes elements to empty strings
         titleSpan.textContent = "New Item";
         description.textContent = "I like this a lot";
         notes.textContent = "Remember to do it this important way";
@@ -449,25 +479,25 @@ export function makeProjectDescriptionDialog (project) {
     }
 
     function submitDialog() {
-        // Get the values of the title, description, and notes elements
-        let titleValue = titleSpan.value;
-        let descriptionValue = description.value;
-        let notesValue = notes.value;
+        // Get the checkedValues of the title, description, and notes elements
+        let titlecheckedValue = titleSpan.checkedValue;
+        let descriptioncheckedValue = description.checkedValue;
+        let notescheckedValue = notes.checkedValue;
 
         const buttonToChange = document.getElementById(project.title);
         //console.log({buttonToChange})
-        buttonToChange.textContent = titleValue;
-        buttonToChange.id = titleValue;
+        buttonToChange.textContent = titlecheckedValue;
+        buttonToChange.id = titlecheckedValue;
 
         //Make a copy of project before changes
         let saved_project = project;
         let saved_index = sorted_projects.indexOf(project.title);
         console.log(`Saved index = ${saved_index}`)
         console.log(`Correct index? = ${sorted_projects[saved_index]}`)
-        //Change current project values
-        project.title = titleValue;
-        project.description = descriptionValue;
-        project.notes = notesValue;
+        //Change current project checkedValues
+        project.title = titlecheckedValue;
+        project.description = descriptioncheckedValue;
+        project.notes = notescheckedValue;
 
         delete projects[saved_project.title];
         projects[project.title] = project;
@@ -485,7 +515,7 @@ export function makeProjectDescriptionDialog (project) {
 
     // Define a function to reset the dialog
     function resetDialog() {
-        // Reset the values of the title, description, and notes elements to empty strings
+        // Reset the checkedValues of the title, description, and notes elements to empty strings
         titleSpan.textContent = "New Project";
         description.textContent = "This will be a great list of things to do";
         notes.textContent = "They're expecting a GIRL baby";
